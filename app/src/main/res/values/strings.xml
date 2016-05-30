@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Popular Movies</string>
     <string name="title_movieitem_detail">MovieItem Detail</string>
+    <string-array name="preference">
+        <item>Top Rated</item>
+        <item>Popular</item>
+    </string-array>
 </resources>
