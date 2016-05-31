@@ -3,6 +3,7 @@ package com.example.keerthana.popularmovies;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,6 +52,7 @@ public class MovieItemListActivity extends AppCompatActivity {
      */
     public final String[] map= {"top_rated", "popular"};
     public static final String APP_ID = "d5e0ba6839dff91fe04d69bcb3bdabd3";
+    public static JSONArray movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +75,9 @@ public class MovieItemListActivity extends AppCompatActivity {
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final ArrayList<MovieItem> mValues;
+        private final ArrayList<String> mValues;
 
-        public SimpleItemRecyclerViewAdapter(ArrayList<MovieItem> items) {
+        public SimpleItemRecyclerViewAdapter(ArrayList<String> items) {
             mValues = items;
         }
 
@@ -87,9 +89,9 @@ public class MovieItemListActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.mItem = mValues.get(position);
-            Picasso.with(getApplicationContext()).load("http://image.tmdb.org/t/p/w185"+holder.mItem.poster_path).into(holder.mImg);
+            Picasso.with(getApplicationContext()).load("http://image.tmdb.org/t/p/w185"+holder.mItem).into(holder.mImg);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,7 +99,7 @@ public class MovieItemListActivity extends AppCompatActivity {
 
                         Context context = v.getContext();
                         Intent intent = new Intent(context, MovieItemDetailActivity.class);
-                        intent.putExtra(MovieItemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        intent.putExtra(MovieItemDetailFragment.ARG_ITEM_ID, position);
                         context.startActivity(intent);
 
                 }
@@ -112,7 +114,7 @@ public class MovieItemListActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final ImageView mImg;
-            public MovieItem mItem;
+            public String mItem;
 
             public ViewHolder(View view) {
                 super(view);
@@ -212,13 +214,13 @@ public class MovieItemListActivity extends AppCompatActivity {
 
     private void parseJson(String dataJson) throws JSONException {
         JSONObject json = new JSONObject(dataJson);
-        JSONArray movieList = json.getJSONArray("results");
-        ArrayList<MovieItem> array = new ArrayList<MovieItem>();
+        movieList = json.getJSONArray("results");
+        ArrayList<String> array = new ArrayList<String>();
         for (int i=0;i<movieList.length();i++) {
             JSONObject jsonObject = movieList.getJSONObject(i);
             String poster_path = jsonObject.getString("poster_path");
             long id = jsonObject.getLong("id");
-            MovieItem item = new MovieItem(id, poster_path);
+            String item = poster_path;
             array.add(item);
             Log.i("StringURL", poster_path);
         }

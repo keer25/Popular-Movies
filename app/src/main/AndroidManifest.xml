@@ -21,6 +21,7 @@
         <activity
             android:name=".MovieItemDetailActivity"
             android:label="@string/title_movieitem_detail"
+            android:screenOrientation="locked"
             android:parentActivityName=".MovieItemListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
