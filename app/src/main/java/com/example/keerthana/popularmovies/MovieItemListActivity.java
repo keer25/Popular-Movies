@@ -51,14 +51,14 @@ public class MovieItemListActivity extends AppCompatActivity {
      * device.
      */
     public final String[] map= {"top_rated", "popular"};
-    public static final String APP_ID = "d5e0ba6839dff91fe04d69bcb3bdabd3";
+    public static String APP_ID ;
     public static JSONArray movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movieitem_list);
-
+        APP_ID = this.getString(R.string.APIKEY);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());

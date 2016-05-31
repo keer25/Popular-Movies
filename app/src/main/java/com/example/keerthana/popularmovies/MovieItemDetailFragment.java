@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.keerthana.popularmovies.dummy.DummyContent;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
