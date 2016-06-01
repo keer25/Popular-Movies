@@ -35,6 +35,7 @@ public class MovieItemDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movieitem_detail);
+        if (savedInstanceState == null) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
         int pos = getIntent().getIntExtra(MovieItemDetailFragment.ARG_ITEM_ID,0);
@@ -55,7 +56,8 @@ public class MovieItemDetailActivity extends AppCompatActivity {
 
                 try {
                     appBarLayout.setTitle(info.getString("title"));
-                    ((TextView) appBarLayout.findViewById(R.id.date)).setText(R.string.release + info.getString("release_date"));
+                    ((TextView) appBarLayout.findViewById(R.id.date)).setText(getString(R.string.released_on)+" "
+                            + info.getString("release_date"));
                     ImageView imageView= (ImageView) appBarLayout.findViewById(R.id.movie_poster);
                     if (isNetworkAvailable()) {
                         Picasso.with(this).load("http://image.tmdb.org/t/p/w185" + info.getString("poster_path")).into(imageView);
@@ -83,7 +85,6 @@ public class MovieItemDetailActivity extends AppCompatActivity {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
-        if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();

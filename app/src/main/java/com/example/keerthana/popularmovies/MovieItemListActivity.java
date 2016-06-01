@@ -3,6 +3,7 @@ package com.example.keerthana.popularmovies;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Movie;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -59,22 +60,20 @@ public class MovieItemListActivity extends AppCompatActivity {
     public static JSONArray movieList;
     private final String SORT_KEY = "sort_order";
     int pos;
-    Bundle saved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movieitem_list);
         APP_ID = this.getString(R.string.APIKEY);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-        toolbar.setLogo(R.mipmap.ic_launcher);
-        saved = savedInstanceState;
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.movieitem_list);
         assert recyclerView != null;
         GridLayoutManager layout = new GridLayoutManager(getApplicationContext(), calSpan());
         recyclerView.setLayoutManager(layout);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getTitle());
+        toolbar.setLogo(R.mipmap.ic_launcher);
     }
 
 
@@ -153,10 +152,6 @@ public class MovieItemListActivity extends AppCompatActivity {
                 R.array.preference, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(adapter); // set the adapter to provide layout of rows and content
-        if (saved != null) {
-            pos = saved.getInt(SORT_KEY);
-            spinner.setSelection(pos);
-        }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -169,7 +164,6 @@ public class MovieItemListActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -244,17 +238,20 @@ public class MovieItemListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(array));
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putInt(SORT_KEY, pos);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    public void onConfigurationChanged (Configuration newConfig) {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.movieitem_list);
+        assert recyclerView != null;
+        GridLayoutManager layout = new GridLayoutManager(getApplicationContext(), calSpan());
+        recyclerView.setLayoutManager(layout);
+        super.onConfigurationChanged(newConfig);
     }
 
 }
