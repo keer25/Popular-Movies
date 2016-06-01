@@ -53,6 +53,9 @@ public class MovieItemListActivity extends AppCompatActivity {
     public final String[] map= {"top_rated", "popular"};
     public static String APP_ID ;
     public static JSONArray movieList;
+    private final String SORT_KEY = "sort_order";
+    int pos;
+    Bundle saved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,7 @@ public class MovieItemListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
         toolbar.setLogo(R.mipmap.ic_launcher);
-
+        saved = savedInstanceState;
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.movieitem_list);
         assert recyclerView != null;
         GridLayoutManager layout = new GridLayoutManager(getApplicationContext(), calSpan());
@@ -98,7 +101,7 @@ public class MovieItemListActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                         Context context = v.getContext();
-                        Intent intent = new Intent(context, MovieItemDetailActivity.class);
+                        Intent intent = new Intent(context,MovieItemDetailActivity.class);
                         intent.putExtra(MovieItemDetailFragment.ARG_ITEM_ID, position);
                         context.startActivity(intent);
 
@@ -146,10 +149,15 @@ public class MovieItemListActivity extends AppCompatActivity {
                 R.array.preference, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(adapter); // set the adapter to provide layout of rows and content
+        if (saved != null) {
+            pos = saved.getInt(SORT_KEY);
+            spinner.setSelection(pos);
+        }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String pref = map[position];
+                pos = position;
                 GetMoviesTask getMoviesTask = new GetMoviesTask();
                 getMoviesTask.execute(pref);
             }
@@ -229,6 +237,12 @@ public class MovieItemListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(array));
 
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(SORT_KEY, pos);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
 }

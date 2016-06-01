@@ -2,6 +2,7 @@ package com.example.keerthana.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * An activity representing a single MovieItem detail screen. This
@@ -25,13 +33,37 @@ public class MovieItemDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movieitem_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
+        int pos = getIntent().getIntExtra(MovieItemDetailFragment.ARG_ITEM_ID,0);
+        JSONObject info;
+        try {
+            info = MovieItemListActivity.movieList.getJSONObject(pos);
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+            if (appBarLayout != null) {
+                try {
+                    appBarLayout.setTitle(info.getString("title"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
+                try {
+                    appBarLayout.setTitle(info.getString("title"));
+                    ((TextView) appBarLayout.findViewById(R.id.date)).setText(R.string.release + info.getString("release_date"));
+                    ImageView imageView= (ImageView) appBarLayout.findViewById(R.id.movie_poster);
+                    Picasso.with(this).load("http://image.tmdb.org/t/p/w185"+info.getString("poster_path")).into(imageView);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-        // Show the Up button in the action bar.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        // Show the Up button in the action bar.
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -46,8 +78,7 @@ public class MovieItemDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putInt(MovieItemDetailFragment.ARG_ITEM_ID,
-                    getIntent().getIntExtra(MovieItemDetailFragment.ARG_ITEM_ID,0));
+            arguments.putInt(MovieItemDetailFragment.ARG_ITEM_ID, pos);
             MovieItemDetailFragment fragment = new MovieItemDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
