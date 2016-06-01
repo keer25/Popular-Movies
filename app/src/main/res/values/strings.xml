@@ -8,4 +8,5 @@
     <string name="release">Released on </string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="network_error">Check Your Network Connection</string>
 </resources>

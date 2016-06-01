@@ -1,6 +1,9 @@
 package com.example.keerthana.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +16,7 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -53,7 +57,12 @@ public class MovieItemDetailActivity extends AppCompatActivity {
                     appBarLayout.setTitle(info.getString("title"));
                     ((TextView) appBarLayout.findViewById(R.id.date)).setText(R.string.release + info.getString("release_date"));
                     ImageView imageView= (ImageView) appBarLayout.findViewById(R.id.movie_poster);
-                    Picasso.with(this).load("http://image.tmdb.org/t/p/w185"+info.getString("poster_path")).into(imageView);
+                    if (isNetworkAvailable()) {
+                        Picasso.with(this).load("http://image.tmdb.org/t/p/w185" + info.getString("poster_path")).into(imageView);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_LONG).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -102,5 +111,12 @@ public class MovieItemDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

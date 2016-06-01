@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Movie;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +29,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -159,7 +163,11 @@ public class MovieItemListActivity extends AppCompatActivity {
                 String pref = map[position];
                 pos = position;
                 GetMoviesTask getMoviesTask = new GetMoviesTask();
-                getMoviesTask.execute(pref);
+                if (isNetworkAvailable()) {
+                    getMoviesTask.execute(pref);
+                } else {
+                    Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -227,7 +235,6 @@ public class MovieItemListActivity extends AppCompatActivity {
         for (int i=0;i<movieList.length();i++) {
             JSONObject jsonObject = movieList.getJSONObject(i);
             String poster_path = jsonObject.getString("poster_path");
-            long id = jsonObject.getLong("id");
             String item = poster_path;
             array.add(item);
             Log.i("StringURL", poster_path);
@@ -235,14 +242,19 @@ public class MovieItemListActivity extends AppCompatActivity {
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.movieitem_list);
         assert recyclerView != null;
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(array));
-
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt(SORT_KEY, pos);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }
