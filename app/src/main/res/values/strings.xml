@@ -4,9 +4,12 @@
     <string-array name="preference">
         <item>Top Rated</item>
         <item>Popular</item>
+        <item>Favourites</item>
     </string-array>
     <string name="released_on">Released on </string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="network_error">Check Your Network Connection</string>
+    <string name="trailers">TRAILERS</string>
+    <string name="reviews">REVIEWS</string>
 </resources>

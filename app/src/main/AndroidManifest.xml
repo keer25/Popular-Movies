@@ -13,9 +13,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MovieItemListActivity"
-            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,13 +25,14 @@
         </activity>
         <activity
             android:name=".MovieItemDetailActivity"
-            android:parentActivityName=".MovieItemListActivity"
             android:configChanges="orientation|screenSize"
+            android:parentActivityName=".MovieItemListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.keerthana.popularmovies.MovieItemListActivity" />
         </activity>
+        <activity android:name=".MovieReviewActivity"></activity>
     </application>
 
 </manifest>

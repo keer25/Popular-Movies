@@ -35,7 +35,7 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                    android:layout_gravity="bottom"
                 android:textSize="@dimen/abc_text_size_medium_material"
                 app:layout_collapseMode = "pin"
                 />
@@ -52,6 +52,16 @@
 
 
     </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:src="@android:drawable/btn_star"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|right|end"/>
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/movieitem_detail_container"

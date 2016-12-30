@@ -7,7 +7,8 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:padding="8dp">
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,14 +19,60 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/abc_text_size_display_2_material"
-        android:layout_marginLeft="30dp"
+        android:textSize="22sp"
         android:id="@+id/rating"/>
 </LinearLayout>
     <TextView
     android:id="@+id/detail"
-    style="?android:attr/textAppearanceLarge"
+    style="?android:attr/textAppearanceMedium"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:textColor="@color/grey"
     android:padding="16dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        style="?android:attr/textAppearanceMedium"
+        android:textColor="#000"
+        android:paddingTop="32dp"
+        android:text="@string/trailers"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id = "@+id/trailer_container">
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        style="?android:attr/textAppearanceMedium"
+        android:textColor="#000"
+        android:paddingTop="32dp"
+        android:text="@string/reviews"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/review_container">
+
+    </LinearLayout>
+
     </LinearLayout>

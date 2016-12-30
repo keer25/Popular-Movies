@@ -30,6 +30,7 @@ public class MovieItemDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
 
     private JSONObject info;
+    private String mId;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -46,11 +47,10 @@ public class MovieItemDetailFragment extends Fragment {
             int pos = getArguments().getInt(ARG_ITEM_ID);
             try {
                 info = MovieItemListActivity.movieList.getJSONObject(pos);
+                mId = info.getString("id");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //Activity activity = this.getActivity();
-
         }
     }
 
@@ -64,6 +64,10 @@ public class MovieItemDetailFragment extends Fragment {
                 float avg = (float) info.getDouble("vote_average");
                 ((RatingBar) rootView.findViewById(R.id.ratingBar)).setRating(avg/2);
                 ((TextView) rootView.findViewById(R.id.rating)).setText(String.valueOf(avg)+" / 10");
+
+                new GetTrailersTask(getContext(), getActivity()).execute(mId);
+
+                new GetReviewsTask(getContext(), getActivity()).execute(mId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
