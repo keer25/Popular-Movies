@@ -107,16 +107,15 @@ public class MovieItemListActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String pref = map[position];
                 pos = position;
-
-                if (position != 2) {
-                    GetMoviesTask getMoviesTask = new GetMoviesTask(getApplicationContext(), MovieItemListActivity.this);
-                    if (isNetworkAvailable()) {
+                GetMoviesTask getMoviesTask = new GetMoviesTask(getApplicationContext(), MovieItemListActivity.this);
+                if (isNetworkAvailable()) {
+                    if (position != 2){
                         getMoviesTask.execute(pref);
-                    } else {
-                        Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_LONG).show();
+                    }else {
+                        new GetFavouritesTask(getBaseContext(), MovieItemListActivity.this).execute();
                     }
-                }else {
-                    new GetFavouritesTask(getBaseContext(), MovieItemListActivity.this).execute();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_LONG).show();
                 }
             }
             @Override

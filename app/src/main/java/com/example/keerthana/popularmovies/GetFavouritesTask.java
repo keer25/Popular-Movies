@@ -47,6 +47,9 @@ public class GetFavouritesTask extends AsyncTask<Void, Void ,JSONArray> {
             if (preferences == null){
                 return null;
             }
+            if ( preferences.getStringSet(MovieItemDetailActivity.FAVOURITES_COLLECTION, null) == null ){
+                return null;
+            }
             HashSet<String> favs = new HashSet<>(preferences.getStringSet(MovieItemDetailActivity.FAVOURITES_COLLECTION ,null));
 
             Log.d("PREFERENCES", favs.toString());
@@ -99,12 +102,15 @@ public class GetFavouritesTask extends AsyncTask<Void, Void ,JSONArray> {
     public void parseJson(JSONArray dataJson) throws JSONException {
         movieList = dataJson;
         ArrayList<String> array = new ArrayList<String>();
-        for (int i=0;i<movieList.length();i++) {
-            JSONObject jsonObject = movieList.getJSONObject(i);
-            String poster_path = jsonObject.getString("poster_path");
-            String item = poster_path;
-            array.add(item);
-            Log.i("StringURL", poster_path);
+
+        if (movieList != null) {
+            for (int i = 0; i < movieList.length(); i++) {
+                JSONObject jsonObject = movieList.getJSONObject(i);
+                String poster_path = jsonObject.getString("poster_path");
+                String item = poster_path;
+                array.add(item);
+                Log.i("StringURL", poster_path);
+            }
         }
         RecyclerView recyclerView = (RecyclerView) mActivity.findViewById(R.id.movieitem_list);
         assert recyclerView != null;

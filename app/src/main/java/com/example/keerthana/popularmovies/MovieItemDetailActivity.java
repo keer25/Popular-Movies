@@ -100,7 +100,13 @@ public class MovieItemDetailActivity extends AppCompatActivity {
 
                         SharedPreferences preferences = getSharedPreferences(FAVOURITES_PREFERENCE, MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
-                        HashSet<String> temp = new HashSet<>(preferences.getStringSet(FAVOURITES_COLLECTION, null));
+
+                        HashSet<String> temp;
+                        if (preferences.getStringSet(FAVOURITES_COLLECTION, null) != null) {
+                            temp = new HashSet<>(preferences.getStringSet(FAVOURITES_COLLECTION, null));
+                        }else {
+                            temp = new HashSet<>();
+                        }
                         temp.add(mId);
                         editor.putStringSet(FAVOURITES_COLLECTION, temp);
                         editor.commit();
